@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="LOG_PATH" value="/opt/app/logs/" />
+
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{"yyyy-MM-dd HH:mm:ss,SSS"}^|0^|%-1level^|%thread^|%logger{50}^|%M^|%msg%n</pattern>
+            <charset>UTF-8</charset>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_PATH}/gateway_err.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/gateway_err.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{"yyyy-MM-dd HH:mm:ss,SSS"}^|0^|%-1level^|%thread^|%logger{50}^|%M^|%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印错误日志 -->
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <appender name="warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/gateway_warn.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/gateway_warn.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{"yyyy-MM-dd HH:mm:ss,SSS"}^|0^|%-1level^|%thread^|%logger{50}^|%M^|%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印warn日志 -->
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/gateway_info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/gateway_info.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{"yyyy-MM-dd HH:mm:ss,SSS"}^|0^|%-1level^|%thread^|%logger{50}^|%M^|%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打info误日志 -->
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <appender name="debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/gateway_debug.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/gateway_debug.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{"yyyy-MM-dd HH:mm:ss,SSS"}^|0^|%-1level^|%thread^|%logger{50}^|%M^|%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--配置异步日志-->
+    <appender name="async_console" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="console"/>
+        <includeCallerData>true</includeCallerData><!-- 包含调用者的信息，否则不识别行号和调用方法-->
+    </appender>
+    <appender name="async_info" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="info"/>
+        <includeCallerData>true</includeCallerData>
+    </appender>
+    <appender name="async_warn" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="warn"/>
+        <includeCallerData>true</includeCallerData>
+    </appender>
+    <appender name="async_error" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="error"/>
+        <includeCallerData>true</includeCallerData>
+    </appender>
+
+
+    <root level="info">
+        <appender-ref ref="async_console"/>
+        <appender-ref ref="async_info"/>
+        <appender-ref ref="async_warn"/>
+        <appender-ref ref="async_error"/>
+    </root>
+
+</configuration>

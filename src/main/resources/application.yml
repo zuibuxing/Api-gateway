@@ -1,0 +1,47 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+#    enabled-by-default: false
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: prod
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+    gateway:
+      httpclient:
+        pool:
+          acquire-timeout: 6000
+          max-connections: 10000
+        connect-timeout: 10000
+        response-timeout: 60s
+      enabled: true
+      routes:
+        - id: test
+          uri: lb://test
+          predicates:
+            - Path=/test/v1
+        - id: test2
+          uri: lb://test2
+          predicates:
+            - Path=/test/v2
+          order: -2
+
+server:
+  port: 8080
+
+
+ribbon:
+  ServerListRefreshInterval: 30000
+#依赖 spring-boot-starter-web和 spring-retry的时候，使用这种配置方式
+#  MaxAutoRetries: 0
+#  MaxAutoRetriesNextServer: 2
+#  ReadTimeout: 2000
+#  ConnectTimeout: 1500
+#  OkToRetryOnAllOperations: true
+

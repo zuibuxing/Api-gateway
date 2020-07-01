@@ -1,0 +1,9 @@
+youxin:
+  service:
+    fetchRegisterUrl: http://risk-meta-gateway1.test.rrdbg.com,http://risk-meta-gateway2.test.rrdbg.com,http://risk-meta-gateway3.test.rrdbg.com
+    retryTime: 3
+
+poll:
+  server:
+    flag: true
+    corn: 0/30 * * * * ?
